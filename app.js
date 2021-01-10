@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+const promptToBegin = require('./prompts');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -14,6 +15,11 @@ connection.connect((err) => {
     if (err) {
         console.log('could not connect: ' + err.stack)
     }
-
-    console.log('connected as id ' + connection.threadId);
 });
+
+let testing = async () => {
+    let value = await promptToBegin.promptToBegin();
+    console.log('Console logged: ' + value.Purpose);
+}
+
+testing();
