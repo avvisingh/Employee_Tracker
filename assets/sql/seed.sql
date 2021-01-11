@@ -19,16 +19,3 @@ VALUES
 ('Stephen', 'Larkham', 1, 1),
 ('George', 'Gregan', 2, 1),
 ('David', 'Pocock', 3, 3);
-
-SELECT * FROM department;
-SELECT * FROM role;
-SELECT * FROM employee;
-
-SELECT 
-first_name,
-last_name,
-title,
-salary
-FROM role
-LEFT JOIN employee
-ON employee.role_id = role.id;

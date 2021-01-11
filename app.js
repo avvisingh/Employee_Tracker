@@ -1,6 +1,5 @@
-const mysql = require('mysql');
 const inquirer = require('inquirer');
-const promptToBegin = require('./prompts');
+const mysql = require('mysql');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -9,17 +8,14 @@ const connection = mysql.createConnection({
     database: 'employee_tracker'
 });
 
-const pool = mysql.createPool(connection);
-
 connection.connect((err) => {
-    if (err) {
-        console.log('could not connect: ' + err.stack)
-    }
-});
+    if (err) throw err.stack;
 
-let testing = async () => {
-    let value = await promptToBegin.promptToBegin();
-    console.log('Console logged: ' + value.Purpose);
-}
-
-testing();
+    connection.query('SELECT * FROM employee', (error, results, fields) => {
+        if (error) {
+            console.log('Bad Request: ' + error.stack);
+            return;
+        }
+        console.log(results);
+    })
+})
