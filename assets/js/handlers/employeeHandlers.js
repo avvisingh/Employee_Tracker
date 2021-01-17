@@ -28,10 +28,17 @@ const viewAllEmployees = () => {
 const addEmployee = async () => {
     let firstNamePromise = await fetchEmployeeFirstName();
     let firstName = firstNamePromise.FirstName;
+
     let lastNamePromise = await fetchEmployeeLastName();
     let lastName = lastNamePromise.LastName;
 
-    console.log(firstName, lastName);
+    let rolePromise = await fetchEmployeeRole();
+    let employeeRole = rolePromise.Role;
+
+    let employeeManagerPromise = await fetchEmployeeManager();
+    let employeeManager = employeeManagerPromise.EmployeeManager;
+
+    console.log(firstName, lastName, employeeRole, employeeManager);
 }
 
 const fetchEmployeeFirstName = () => {
@@ -47,6 +54,22 @@ const fetchEmployeeLastName = () => {
         type: "input",
         name: "LastName",
         message: "What is the Last Name of the employee you wish to add?"
+    }])
+}
+
+const fetchEmployeeRole = () => {
+    return inquirer.prompt([{
+        type: "input",
+        name: "Role",
+        message: "What is the Role of the employee you wish to add?"
+    }])
+}
+
+const fetchEmployeeManager = () => {
+    return inquirer.prompt([{
+        type: "number",
+        name: "EmployeeManager",
+        message: "Please input the id of the Employee's Manager"
     }])
 }
 
