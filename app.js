@@ -26,7 +26,7 @@ const beginPrompt = async () => {
             break;
         case "Manage Employees":
             console.log('User would like to Manage Employees');
-            employeeHandler.viewAllEmployees();
+            employeeHandler.addEmployee();
             break;
         case "Manage Roles":
             console.log('User would like to Manage Roles');

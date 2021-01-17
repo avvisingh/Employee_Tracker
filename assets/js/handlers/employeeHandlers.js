@@ -25,6 +25,32 @@ const viewAllEmployees = () => {
     })
 }
 
+const addEmployee = async () => {
+    let firstNamePromise = await fetchEmployeeFirstName();
+    let firstName = firstNamePromise.FirstName;
+    let lastNamePromise = await fetchEmployeeLastName();
+    let lastName = lastNamePromise.LastName;
+
+    console.log(firstName, lastName);
+}
+
+const fetchEmployeeFirstName = () => {
+    return inquirer.prompt([{
+        type: "input",
+        name: "FirstName",
+        message: "What is the First Name of the employee you wish to add?"
+    }])
+}
+
+const fetchEmployeeLastName = () => {
+    return inquirer.prompt([{
+        type: "input",
+        name: "LastName",
+        message: "What is the Last Name of the employee you wish to add?"
+    }])
+}
+
 module.exports = {
-    viewAllEmployees
+    viewAllEmployees,
+    addEmployee
 }
