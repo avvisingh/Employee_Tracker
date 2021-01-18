@@ -38,14 +38,20 @@ const addEmployee = async () => {
     let employeeManagerPromise = await fetchEmployeeManager();
     let employeeManager = employeeManagerPromise.EmployeeManager;
 
-    console.log(firstName, lastName, employeeRole, employeeManager);
+    // let query = 
 }
 
 const fetchEmployeeFirstName = () => {
     return inquirer.prompt([{
         type: "input",
         name: "FirstName",
-        message: "What is the First Name of the employee you wish to add?"
+        message: "What is the First Name of the employee you wish to add?",
+        validate: (input) => {
+            if (!input) throw new Error('First Name cannot be left empty!');
+            if (! /^[a-zA-Z0-9]+$/.test(input)) throw new Error("Please enter a valid name with text only!"); 
+
+            return true;
+        }
     }])
 }
 
@@ -53,15 +59,21 @@ const fetchEmployeeLastName = () => {
     return inquirer.prompt([{
         type: "input",
         name: "LastName",
-        message: "What is the Last Name of the employee you wish to add?"
+        message: "What is the Last Name of the employee you wish to add?",
+        validate: (input) => {
+            if (!input) throw new Error('Last Name cannot be left empty!');
+            if (! /^[a-zA-Z0-9]+$/.test(input)) throw new Error("Please enter a valid name with text only!"); 
+
+            return true;
+        }
     }])
 }
 
 const fetchEmployeeRole = () => {
     return inquirer.prompt([{
-        type: "input",
+        type: "number",
         name: "Role",
-        message: "What is the Role of the employee you wish to add?"
+        message: "What is the Role Id of the employee you wish to add?"
     }])
 }
 
@@ -69,7 +81,7 @@ const fetchEmployeeManager = () => {
     return inquirer.prompt([{
         type: "number",
         name: "EmployeeManager",
-        message: "Please input the id of the Employee's Manager"
+        message: "Please input the Id of the Employee's Manager"
     }])
 }
 
