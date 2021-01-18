@@ -21,7 +21,7 @@ const viewAllEmployees = () => {
         }
 
         console.log("\n");
-        console.table(results);
+        console.log('Your employee was successfully added!');
     })
 }
 
@@ -38,7 +38,24 @@ const addEmployee = async () => {
     let employeeManagerPromise = await fetchEmployeeManager();
     let employeeManager = employeeManagerPromise.EmployeeManager;
 
-    // let query = 
+    if (Number.isNaN(employeeRole)) {
+        employeeRole = null;
+    }
+
+    if (Number.isNaN(employeeManager)) {
+        employeeManager = null;
+    }
+
+    let query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${firstName}", "${lastName}", ${employeeRole}, ${employeeManager})`;
+    
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops! An error has occurred!' + error.stack);
+        }
+
+        console.log("\n");
+        console.table(results);
+    })
 }
 
 const fetchEmployeeFirstName = () => {
