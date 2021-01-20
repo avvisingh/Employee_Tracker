@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('../../connection');
+const employeePrompts = require('./employeePrompts');
 
 const initPrompt = () => {
     return inquirer.prompt([{
@@ -77,16 +78,16 @@ const viewAllEmployees = () => {
 
 //This function consolidates the information fetched from the user and then uses it in a query to add an employee to the "employee" table
 const addEmployee = async () => {
-    let firstNamePromise = await fetchEmployeeFirstName();
+    let firstNamePromise = await employeePrompts.fetchEmployeeFirstName();
     let firstName = firstNamePromise.FirstName;
 
-    let lastNamePromise = await fetchEmployeeLastName();
+    let lastNamePromise = await employeePrompts.fetchEmployeeLastName();
     let lastName = lastNamePromise.LastName;
 
-    let rolePromise = await fetchEmployeeRole();
+    let rolePromise = await employeePrompts.fetchEmployeeRole();
     let employeeRole = rolePromise.Role;
 
-    let employeeManagerPromise = await fetchEmployeeManager();
+    let employeeManagerPromise = await employeePrompts.fetchEmployeeManager();
     let employeeManager = employeeManagerPromise.EmployeeManager;
 
     if (Number.isNaN(employeeRole)) {
@@ -110,59 +111,11 @@ const addEmployee = async () => {
     })
 }
 
-//This function retrieves the employee first name. The returned value used in addEmployee()
-const fetchEmployeeFirstName = () => {
-    return inquirer.prompt([{
-        type: "input",
-        name: "FirstName",
-        message: "What is the First Name of the employee you wish to add?",
-        validate: (input) => {
-            if (!input) throw new Error('First Name cannot be left empty!');
-            if (! /^[a-zA-Z0-9]+$/.test(input)) throw new Error("Please enter a valid name with text only!"); 
-
-            return true;
-        }
-    }])
-}
-
-//This function retrieves the employee last name. The returned value is used in addEmployee()
-const fetchEmployeeLastName = () => {
-    return inquirer.prompt([{
-        type: "input",
-        name: "LastName",
-        message: "What is the Last Name of the employee you wish to add?",
-        validate: (input) => {
-            if (!input) throw new Error('Last Name cannot be left empty!');
-            if (! /^[a-zA-Z0-9]+$/.test(input)) throw new Error("Please enter a valid name with text only!"); 
-
-            return true;
-        }
-    }])
-}
-
-//This function retrieves the employee role-id. The returned value is used in addEmployee()
-const fetchEmployeeRole = () => {
-    return inquirer.prompt([{
-        type: "number",
-        name: "Role",
-        message: "What is the Role Id of the employee you wish to add?"
-    }])
-}
-
-//This function retrieves the employee's manager's id'. The returned value is used in addEmployee()
-const fetchEmployeeManager = () => {
-    return inquirer.prompt([{
-        type: "number",
-        name: "EmployeeManager",
-        message: "Please input the Id of the Employee's Manager"
-    }])
-}
-
 const updateEmployeeRole = async () => {
-    let employeeIDPromise = await employeeToUpdate();
+    let employeeIDPromise = await employeePrompts.employeeToUpdate();
     let employeeID = employeeIDPromise.RoleID;
     
-    let newRoleIDPromise = await roleToUpdateTo();
+    let newRoleIDPromise = await employeePrompts.roleToUpdateTo();
     let newRoleID = newRoleIDPromise.newRoleID;
 
     let query = `UPDATE employee SET role_id = ${newRoleID} WHERE id = ${employeeID}`
@@ -178,28 +131,9 @@ const updateEmployeeRole = async () => {
     })
 }
 
-const employeeToUpdate = () => {
-    return inquirer.prompt([{
-        type: "number",
-        name: "RoleID",
-        message: "Please enter the Employee id for the employee whose Role you'd like to update"
-    }])
-}
-
-const roleToUpdateTo = () => {
-    return inquirer.prompt([{
-        type: "number",
-        name: "newRoleID",
-        message: "Please enter the new Role id for this Employee"
-    }])
-}
 
 module.exports = {
-    beginPrompt,
-    employeeOperationExecutor,
-    viewAllEmployees,
-    addEmployee,
-    updateEmployeeRole
+    beginPrompt
 }
 
 
