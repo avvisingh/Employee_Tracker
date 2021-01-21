@@ -30,8 +30,17 @@ const newDepartmentName = () => {
     }])
 }
 
+const departmentToDelete = () => {
+    return inquirer.prompt([{
+        type: "number",
+        name: "departmentToDelete",
+        message: "Please enter the id of the department you wish to remove"
+    }])
+}
+
 module.exports = {
     fetchDepartmentName,
     fetchDepartmentToUpdateId,
-    newDepartmentName
+    newDepartmentName,
+    departmentToDelete
 }

@@ -155,7 +155,7 @@ const departmentOperationExecutor = async () => {
             updateDepartmentName();
             break;
         case "Delete Department":
-            console.log('Employee would like to Delete Department')
+            deleteDepartment();
     }
 }
 
@@ -209,6 +209,22 @@ const updateDepartmentName = async () => {
     })
 }
 
+const deleteDepartment = async () => {
+    let departmentToDeletePromise = await departmentPrompts.departmentToDelete();
+    let departmentToDelete = departmentToDeletePromise.departmentToDelete;
+
+    let query = `DELETE FROM department WHERE id = ${departmentToDelete}`;
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack)
+        }
+
+        console.log('Your specified department has successfully been removed!');
+        console.log('\n');
+        beginPrompt();
+    })
+}
 
 
 module.exports = {
