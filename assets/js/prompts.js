@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const connection = require('../../connection');
 const employeePrompts = require('./employeePrompts');
 const departmentPrompts = require('./departmentPrompts');
+const rolePrompts = require('./rolePrompts');
 
 const initPrompt = () => {
     return inquirer.prompt([{
@@ -244,7 +245,7 @@ const roleOperationExecutor = async () => {
             viewAllRoles();
             break;
         case "Add Role":
-            console.log('The user would like to Add Role');
+            addRole();
             break;
         case "Change Role Name":
             console.log('The user would like to Change Role Name');
@@ -263,6 +264,31 @@ const viewAllRoles = () => {
         }
 
         console.table(results);
+        console.log('\n');
+        beginPrompt();
+    })
+}
+
+const addRole = async () => {
+    let newRoleNamePromise = await rolePrompts.fetchRoleName();
+    let newRoleName = newRoleNamePromise.newRoleName;
+
+    let newRoleSalaryPromise = await rolePrompts.fetchRoleSalary();
+    let newRoleSalary = newRoleSalaryPromise.newRoleSalary;
+    if (isNaN(newRoleSalary)) newRoleSalary = null;
+
+    let newRoleDepartmentIdPromise = await rolePrompts.fetchRoleDepartmentId();
+    let newRoleDepartmentId = newRoleDepartmentIdPromise.newRoleDepartment;
+    if (isNaN(newRoleDepartmentId)) newRoleDepartmentId = null;
+
+    let query = `INSERT INTO role (title, salary, department_id) VALUES ("${newRoleName}", ${newRoleSalary}, ${newRoleDepartmentId})`;
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
+        }
+
+        console.log('Your Role was successfully added!')
         console.log('\n');
         beginPrompt();
     })
