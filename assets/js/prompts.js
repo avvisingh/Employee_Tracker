@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const connection = require('../../connection');
 const employeePrompts = require('./employeePrompts');
+const departmentPropmts = require('./departmentPrompts');
 
 const initPrompt = () => {
     return inquirer.prompt([{
@@ -17,10 +18,9 @@ const beginPrompt = async () => {
 
     switch (userChoice) {
         case "Manage Departments":
-            console.log('User would like to Manage Departments');
+            departmentOperationExecutor();
             break;
         case "Manage Employees":
-            console.log('User would like to Manage Employees');
             employeeOperationExecutor()
             break;
         case "Manage Roles":
@@ -127,6 +127,47 @@ const updateEmployeeRole = async () => {
 
         console.log("\n");
         console.log("Your employee's Role id was successfully updated");
+        beginPrompt();
+    })
+}
+
+const departmentOperationType = () => {
+    return inquirer.prompt([{
+        type: "list",
+        name: "manageDepartments",
+        message: "How would you like to manage Departments",
+        choices: ["View All Departments", "Add Department", "Change Department Name", "Delete Department"]
+    }])
+}
+
+const departmentOperationExecutor = async () => {
+    let departmentOperationSelectedPromise = await departmentOperationType();
+    let departmentOperationSelected = departmentOperationSelectedPromise.manageDepartments;
+
+    switch (departmentOperationSelected) {
+        case "View All Departments":
+            viewAllDepartments();
+            break;
+        case "Add Department":
+            console.log('Employee would like to Add Department')
+            break;
+        case "Change Department Name":
+            console.log('Employee would like to Change Department Name')
+            break;
+        case "Delete Department":
+            console.log('Employee would like to Delete Department')
+    }
+}
+
+const viewAllDepartments = () => {
+    let query = 'SELECT * FROM department';
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, an error has occurred!' + error.stack);
+        }
+
+        console.table(results);
         beginPrompt();
     })
 }
