@@ -152,7 +152,7 @@ const departmentOperationExecutor = async () => {
             addDepartment();
             break;
         case "Change Department Name":
-            console.log('Employee would like to Change Department Name')
+            updateDepartmentName();
             break;
         case "Delete Department":
             console.log('Employee would like to Delete Department')
@@ -188,6 +188,27 @@ const addDepartment = async () => {
         beginPrompt();
     })
 }
+
+const updateDepartmentName = async () => {
+    let departmentToUpdateIdPromise = await departmentPrompts.fetchDepartmentToUpdateId();
+    let departmentToUpdateId = departmentToUpdateIdPromise.departmentToUpdateid;
+
+    let newDepartmentNamePromise = await departmentPrompts.newDepartmentName();
+    let newDepartmentName = newDepartmentNamePromise.newDepartmentName;
+
+    let query = `UPDATE department SET name = "${newDepartmentName}" WHERE id = ${departmentToUpdateId}`
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
+        }
+
+        console.log('Your department name has been changed!');
+        console.log('\n');
+        beginPrompt();
+    })
+}
+
 
 
 module.exports = {

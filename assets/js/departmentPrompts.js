@@ -14,6 +14,24 @@ const fetchDepartmentName = () => {
     }])
 }
 
+const fetchDepartmentToUpdateId = () => {
+    return inquirer.prompt([{
+        type: "number",
+        name: "departmentToUpdateid",
+        message: "Please enter the id of the department you wish to change names for"
+    }])
+}
+
+const newDepartmentName = () => {
+    return inquirer.prompt([{
+        type: "input",
+        name: "newDepartmentName",
+        message: "Please enter the new name for this department"
+    }])
+}
+
 module.exports = {
-    fetchDepartmentName
+    fetchDepartmentName,
+    fetchDepartmentToUpdateId,
+    newDepartmentName
 }
