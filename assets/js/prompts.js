@@ -254,7 +254,7 @@ const roleOperationExecutor = async () => {
             changeRoleSalary();
             break;
         case "Change Role Department":
-            changeRoleName();
+            changeRoleDepartment();
             break;
         case "Delete Role":
             console.log('Delete Role');
@@ -335,6 +335,27 @@ const changeRoleSalary = async () => {
         }
 
         console.log('Your Role salary was successfully changed!');
+        console.log('\n');
+        beginPrompt();
+    })
+}
+
+const changeRoleDepartment = async () => {
+    let roleToChangePromise = await rolePrompts.fetchRoleID();
+    let roleToChange = roleToChangePromise.roleID;
+
+    let newRoleDepartmentIdPromise = await rolePrompts.fetchRoleDepartmentId();
+    let newRoleDepartmentId = newRoleDepartmentIdPromise.newRoleDepartment;
+    if (isNaN(newRoleDepartmentId)) newRoleDepartmentId = null;
+
+    let query = `UPDATE role SET department_id = ${newRoleDepartmentId} WHERE id = ${roleToChange}`;
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
+        }
+
+        console.log('Your Role Department was successfully changed!');
         console.log('\n');
         beginPrompt();
     })
