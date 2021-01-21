@@ -232,7 +232,7 @@ const roleOperationType = () => {
         type: "list",
         name: "manageRoles",
         message: "How would you like to manage Roles",
-        choices: ["View All Roles", "Add Role", "Change Role Name", "Delete Role"]
+        choices: ["View All Roles", "Add Role", "Change Role Name", "Change Role Salary", "Change Role Department", "Delete Role"]
     }])
 }
 
@@ -248,6 +248,12 @@ const roleOperationExecutor = async () => {
             addRole();
             break;
         case "Change Role Name":
+            changeRoleName();
+            break;
+        case "Change Role Salary":
+            changeRoleSalary();
+            break;
+        case "Change Role Department":
             changeRoleName();
             break;
         case "Delete Role":
@@ -309,6 +315,26 @@ const changeRoleName = async () => {
         }
 
         console.log('Your Role name was successfully changed!');
+        console.log('\n');
+        beginPrompt();
+    })
+}
+
+const changeRoleSalary = async () => {
+    let roleToChangePromise = await rolePrompts.fetchRoleID();
+    let roleToChange = roleToChangePromise.roleID;
+
+    let updatedSalaryPromise = await rolePrompts.fetchRoleSalary();
+    let updatedSalary = updatedSalaryPromise.newRoleSalary;
+
+    let query = `UPDATE role SET salary = ${updatedSalary} WHERE id = ${roleToChange}`
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
+        }
+
+        console.log('Your Role salary was successfully changed!');
         console.log('\n');
         beginPrompt();
     })
