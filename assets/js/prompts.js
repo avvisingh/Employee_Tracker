@@ -21,10 +21,10 @@ const beginPrompt = async () => {
             departmentOperationExecutor();
             break;
         case "Manage Employees":
-            employeeOperationExecutor()
+            employeeOperationExecutor();
             break;
         case "Manage Roles":
-            console.log('User would like to Manage Roles');
+            roleOperationExecutor();
             break;
         case "View Reports":
             console.log('User would like to View Reports');
@@ -235,7 +235,7 @@ const roleOperationType = () => {
     }])
 }
 
-const employeeOperationExecutor = async () => {
+const roleOperationExecutor = async () => {
     let roleOperationSelectedPromise = await roleOperationType();
     let roleOperationSelected = roleOperationSelectedPromise.manageRoles;
 
