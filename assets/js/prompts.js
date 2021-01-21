@@ -241,7 +241,7 @@ const roleOperationExecutor = async () => {
 
     switch (roleOperationSelected) {
         case "View All Roles":
-            console.log('The user would like to View All Roles');
+            viewAllRoles();
             break;
         case "Add Role":
             console.log('The user would like to Add Role');
@@ -252,6 +252,20 @@ const roleOperationExecutor = async () => {
         case "Delete Role":
             console.log('Delete Role');
     }
+}
+
+const viewAllRoles = () => {
+    let query = "SELECT * FROM role";
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
+        }
+
+        console.table(results);
+        console.log('\n');
+        beginPrompt();
+    })
 }
 
 module.exports = {
