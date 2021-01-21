@@ -257,7 +257,7 @@ const roleOperationExecutor = async () => {
             changeRoleDepartment();
             break;
         case "Delete Role":
-            console.log('Delete Role');
+            deleteRole();
     }
 }
 
@@ -334,7 +334,7 @@ const changeRoleSalary = async () => {
             return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
         }
 
-        console.log('Your Role salary was successfully changed!');
+        console.log('Your Role Salary was successfully changed!');
         console.log('\n');
         beginPrompt();
     })
@@ -356,6 +356,23 @@ const changeRoleDepartment = async () => {
         }
 
         console.log('Your Role Department was successfully changed!');
+        console.log('\n');
+        beginPrompt();
+    })
+}
+
+const deleteRole = async () => {
+    let roleToDeletePromise = await rolePrompts.fetchRoleID();
+    let roleToDelete = roleToDeletePromise.roleID;
+
+    let query = `DELETE FROM role WHERE id = ${roleToDelete}`;
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
+        }
+
+        console.log('Your Role was successfully deleted!');
         console.log('\n');
         beginPrompt();
     })
