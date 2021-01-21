@@ -63,7 +63,7 @@ const employeeOperationExecutor = async () => {
 
 //This function is used to make an SQL query and view all of the employees in the "employee" table
 const viewAllEmployees = () => {
-    let query = 'SELECT id AS "Employee ID", first_name AS "First Name", last_name AS "Last Name" FROM employee';
+    let query = 'SELECT id AS "Employee ID", first_name AS "First Name", last_name AS "Last Name", role_id  AS "Role ID", manager_id AS "Manager ID" FROM employee';
 
     connection.query(query, (error, results, fields) => {
         if (error) {
@@ -226,6 +226,33 @@ const deleteDepartment = async () => {
     })
 }
 
+const roleOperationType = () => {
+    return inquirer.prompt([{
+        type: "list",
+        name: "manageRoles",
+        message: "How would you like to manage Roles",
+        choices: ["View All Roles", "Add Role", "Change Role Name", "Delete Role"]
+    }])
+}
+
+const employeeOperationExecutor = async () => {
+    let roleOperationSelectedPromise = await roleOperationType();
+    let roleOperationSelected = roleOperationSelectedPromise.manageRoles;
+
+    switch (roleOperationSelected) {
+        case "View All Roles":
+            console.log('The user would like to View All Roles');
+            break;
+        case "Add Role":
+            console.log('The user would like to Add Role');
+            break;
+        case "Change Role Name":
+            console.log('The user would like to Change Role Name');
+            break;
+        case "Delete Role":
+            console.log('Delete Role');
+    }
+}
 
 module.exports = {
     beginPrompt
