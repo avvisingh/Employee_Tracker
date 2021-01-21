@@ -248,7 +248,7 @@ const roleOperationExecutor = async () => {
             addRole();
             break;
         case "Change Role Name":
-            console.log('The user would like to Change Role Name');
+            changeRoleName();
             break;
         case "Delete Role":
             console.log('Delete Role');
@@ -289,6 +289,26 @@ const addRole = async () => {
         }
 
         console.log('Your Role was successfully added!')
+        console.log('\n');
+        beginPrompt();
+    })
+}
+
+const changeRoleName = async () => {
+    let roleToChangePromise = await rolePrompts.fetchRoleID();
+    let roleToChange = roleToChangePromise.roleID;
+
+    let roleUpdatedNamePromise = await rolePrompts.fetchRoleName();
+    let roleUpdatedName = roleUpdatedNamePromise.newRoleName;
+
+    let query = `UPDATE role SET title = "${roleUpdatedName}" WHERE id = ${roleToChange}`
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
+        }
+
+        console.log('Your Role name was successfully changed!');
         console.log('\n');
         beginPrompt();
     })

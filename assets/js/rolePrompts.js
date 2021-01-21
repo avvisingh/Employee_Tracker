@@ -4,7 +4,7 @@ const fetchRoleName = () => {
     return inquirer.prompt([{
         type: "input",
         name: "newRoleName",
-        message: "Please enter the name of the new Role you would like to add"
+        message: "Please enter the name of the Role"
     }])
 }
 
@@ -24,8 +24,22 @@ const fetchRoleDepartmentId = () => {
     }])
 }
 
+const fetchRoleID = () => {
+    return inquirer.prompt([{
+        type: "number",
+        name: "roleID",
+        message: "Please enter the id of the Role you'd like to action",
+        validate: (input) => {
+            if (!input) throw new Error("You need to enter the ID of the Role");
+
+            return true;
+        }
+    }])
+}
+
 module.exports = {
     fetchRoleName,
     fetchRoleSalary,
-    fetchRoleDepartmentId
+    fetchRoleDepartmentId,
+    fetchRoleID
 }
