@@ -13,3 +13,7 @@ const fetchDepartmentName = () => {
         }
     }])
 }
+
+module.exports = {
+    fetchDepartmentName
+}

@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const connection = require('../../connection');
 const employeePrompts = require('./employeePrompts');
-const departmentPropmts = require('./departmentPrompts');
+const departmentPrompts = require('./departmentPrompts');
 
 const initPrompt = () => {
     return inquirer.prompt([{
@@ -67,7 +67,7 @@ const viewAllEmployees = () => {
 
     connection.query(query, (error, results, fields) => {
         if (error) {
-            return console.log('Oops! An error has occurred!' + error.stack);
+            return console.log('Oops! An error has occurred!' + error.sqlMessage || error.stack);
         }
 
         console.log("\n");
@@ -102,7 +102,7 @@ const addEmployee = async () => {
     
     connection.query(query, (error, results, fields) => {
         if (error) {
-            return console.log('Oops! An error has occurred!' + error.stack);
+            return console.log('Oops! An error has occurred!' + error.sqlMessage || error.stack);
         }
 
         console.log("\n");
@@ -122,7 +122,7 @@ const updateEmployeeRole = async () => {
 
     connection.query(query, (error, results, fields) => {
         if (error) {
-            return console.log('Oops! An error has occurred!' + error.stack);
+            return console.log('Oops! An error has occurred!' + error.sqlMessage || error.stack);
         }
 
         console.log("\n");
@@ -149,7 +149,7 @@ const departmentOperationExecutor = async () => {
             viewAllDepartments();
             break;
         case "Add Department":
-            console.log('Employee would like to Add Department')
+            addDepartment();
             break;
         case "Change Department Name":
             console.log('Employee would like to Change Department Name')
@@ -164,10 +164,27 @@ const viewAllDepartments = () => {
 
     connection.query(query, (error, results, fields) => {
         if (error) {
-            return console.log('Oops, an error has occurred!' + error.stack);
+            return console.log('Oops, an error has occurred!' + error.sqlMessage || error.stack);
         }
 
         console.table(results);
+        beginPrompt();
+    })
+}
+
+const addDepartment = async () => {
+    let departmentNamePromise = await departmentPrompts.fetchDepartmentName();
+    let departmentName = departmentNamePromise.departmentName;
+
+    let query = `INSERT INTO department (name) VALUES ("${departmentName}")`
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            return console.log('Oops, something went wrong! ' + error.sqlMessage || error.stack);
+        }
+
+        console.log('Your department has successfully been added.');
+        console.log('\n');
         beginPrompt();
     })
 }
