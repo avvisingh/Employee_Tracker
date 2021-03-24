@@ -24,6 +24,9 @@ Clone the package from my github repo and run it locally. Be sure to update the 
 
 This app needs to be run from your CLI. You will need to clone the repo, update the database configuration and run "npm i" to install the dependencies.
 
+View this Walkthrough video for more info:
+https://drive.google.com/file/d/10XPj8duAOsqk4KvwVQM61FE7zVk-7Gkv/view
+
 ### Contributing
 
 ### Tests
